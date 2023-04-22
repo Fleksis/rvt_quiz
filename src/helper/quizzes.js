@@ -1,6 +1,7 @@
-export const quizzes = [
+let quizzes = [
     {
         title: "Grāmatvedības pamati",
+        available: true,
         questions: [
             {
                 title: "Kāds ir attaisnojuma dokumentu iegrāmatošanas termiņš, izņemot IK, IU un MUN maksātājus?",
@@ -113,6 +114,7 @@ export const quizzes = [
     },
     {
         title: "Dokumentu kontrole",
+        available: true,
         questions: [
             {
                 title: "Kas ir grāmatvedības organizācijas dokumenti?",
@@ -229,6 +231,7 @@ export const quizzes = [
     },
     {
         title: "Ilgtermiņa ieguldījumu uzskaite",
+        available: true,
         questions: [
             {
                 title: "Kādā vērtībā bilancē norāda pamatlīdzekli?",
@@ -345,6 +348,7 @@ export const quizzes = [
     },
     {
         title: "Krājumu uzskaite",
+        available: true,
         questions: [
             {
                 title: "Kādu krājumu uzskaites metodi grāmatvedībā pielieto preču uzskaitē, ja gada laikā saņemtās preces grāmato izdevumu kontā?",
@@ -461,6 +465,7 @@ export const quizzes = [
     },
     {
         title: "Debitoru uzskaite",
+        available: true,
         questions: [
             {
                 title: "Kurā gadījumā veidojas debitoru parādi?",
@@ -577,6 +582,7 @@ export const quizzes = [
     },
     {
         title: "Naudas līdzekļu uzskaite",
+        available: true,
         questions: [
             {
                 title: "Vai kases ieņēmumu un izdevumu orderos obligāti jānorāda saņēmēja vai izsniedzēja personas kods?",
@@ -693,6 +699,7 @@ export const quizzes = [
     },
     {
         title: "Darba samaksas un atbilstošo nodokļu uzskaite",
+        available: true,
         questions: [
             {
                 title: "Kāds dokuments ir pamats atvieglojumu piemērošanai par apgādībā esošu personu, veicot darba algas aprēķinu?",
@@ -808,3 +815,11 @@ export const quizzes = [
         ]
     }
 ]
+
+if (JSON.parse(localStorage.getItem('quizzes'))) {
+    quizzes = JSON.parse(localStorage.getItem('quizzes'))
+} else {
+    localStorage.setItem('quizzes', JSON.stringify(quizzes))
+}
+
+export { quizzes }

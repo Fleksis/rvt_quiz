@@ -28,6 +28,22 @@ export default {
   computed: {
     quizzes() {
       return window.quizzes.value
+    },
+    quiz() {
+      return window.quizzes.value[this.index]
+    }
+  },
+  mounted() {
+    let answeredQuestionCount = 0
+    this.quiz.questions.forEach((question) => {
+      if (!question.available) {
+        answeredQuestionCount++
+      }
+    })
+
+    if (answeredQuestionCount === this.quiz.questions.length) {
+      this.quiz.available = false
+      this.$router.push('/')
     }
   }
 };

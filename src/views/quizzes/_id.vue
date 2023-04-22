@@ -1,59 +1,94 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center mt-1">
+  <div class="d-flex justify-content-center align-items-center">
     <div class="d-flex flex-wrap justify-content-center align-items-center w-100">
-      <div class="d-flex justify-content-between align-items-center m-4 w-100">
-        <router-link class="btn btn-primary" style="font-size: 24px" role="button" :to="{ name: 'question', params: { id: this.$route.params.quizIndex } }">Atpakaļ</router-link>
-        <div>123</div> <!-- TODO -->
+      <div class="d-flex m-4 w-100">
+        <div class="d-flex justify-content-between w-50">
+          <router-link class="btn btn-primary" style="font-size: 24px; height: fit-content" role="button" :to="{ name: 'question', params: { id: this.$route.params.quizIndex } }">Atpakaļ</router-link>
+          <p class="h2" style="font-size: 64px">{{ timer }}</p> <!-- TODO -->
+        </div>
       </div>
       <div class="container">
-        <div style="padding-top: 7px;" >
-          <div class="h2 mb-4 " style="color: #212529;padding-left: 5px">{{ `${quiz.questions.indexOf(question) + 1}/${quiz.questions.length} ${question.title}` }}</div>
-          <div id="options">
-            <ol class="d-flex flex-column gap-1">
-              <li v-for="answer in question.answers" :key="answer.index" class="rounded-3 p-2" :class="{ 'correct-answer': answer.correct && showCorrectAnswer }" style="font-size: 30px;color: #212529">
-                {{ answer.title }}
-              </li>
-            </ol>
-          </div>
+        <div class="h2 mb-4 " style="color: #212529;padding-left: 5px">{{ question.title }}</div>
+        <div v-if="showAnswers" id="options">
+          <ol class="d-flex flex-column gap-1">
+            <li v-for="answer in question.answers" :key="answer.index" class="rounded-3 p-2" :class="{ 'correct-answer': answer.correct && showCorrectAnswer }" style="font-size: 30px;color: #212529">
+              {{ answer.title }}
+            </li>
+          </ol>
         </div>
         <div class="d-flex justify-content-between m-4">
-          <button class="btn btn-primary" style="font-size: 24px" @click="showAnswer()" >Parādīt atbildi</button>
-          <button v-if="quiz.questions.indexOf(question) + 1 >= quiz.questions.length" class="btn btn-primary" style="font-size: 24px" @click="finish()" >Pabeigt</button>
-          <button v-else class="btn btn-primary" style="font-size: 24px" @click="submit()" >Nakamais</button>
+          <button v-if="!showAnswers" class="btn btn-primary" style="font-size: 24px" @click="startTask()">Rādīt atbilžu variantus</button>
+          <button class="btn btn-primary" style="font-size: 24px" @click="showAnswer()">Parādīt atbildi</button>
+          <transition>
+            <button v-if="showCorrectAnswer && quiz.questions.indexOf(question) + 1 >= quiz.questions.length" class="btn btn-primary" style="font-size: 24px" @click="finish()">Pabeigt</button>
+            <button v-else-if="showCorrectAnswer" class="btn btn-primary" style="font-size: 24px" @click="submit()">Nakamais</button>
+          </transition>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {quizzes} from "../../helper/quizzes";
+import audio from "../../assets/sounds/TimerSound.mp3"
 
 export default {
   data () {
     return {
-      // currentQuestion: 0,
-      // correctAnswers: 0,
-      // selectedAnswer: null,
-      // score: null,
-      // showError: false,
+      timer: 30,
+      timerAudio: new Audio(audio),
+      showAnswers: false,
       showCorrectAnswer: false,
     }
   },
   computed: {
+    quizzes() {
+      return window.quizzes
+    },
     quiz() {
       return window.quizzes.value[this.$route.params.quizIndex]
     },
-    question() {
-      return window.quizzes.value[this.$route.params.quizIndex].questions[this.$route.params.questionIndex]
+    question: {
+      get() {
+        return window.quizzes.value[this.$route.params.quizIndex].questions[this.$route.params.questionIndex]
+      },
+      set() {
+        window.quizzes.value[this.$route.params.quizIndex].questions[this.$route.params.questionIndex].available = !window.quizzes.value[this.$route.params.quizIndex].questions[this.$route.params.questionIndex].available
+      }
     }
   },
+  beforeUnmount() {
+    this.timerAudio.pause()
+  },
   methods: {
+    startTimer() {
+      setTimeout(() => {
+        if (this.timer <= 0) {
+          return
+        }
+        if (this.timer >= 1) {
+          this.timer--
+        }
+        this.startTimer()
+      }, 990)
+    },
+    async startTask() {
+      this.showAnswers = true
+      await this.timerAudio.play()
+      this.startTimer()
+    },
     showAnswer() {
-      this.question.available = false
+      this.showAnswers = true
+      this.question = !this.question
+      localStorage.setItem('quizzes', JSON.stringify(quizzes))
       this.showCorrectAnswer = !this.showCorrectAnswer
     },
     submit(){
-      this.$router.push({ name: 'quiz', params: {quizIndex: this.$route.params.quizIndex, questionIndex: (parseInt(this.$route.params.questionIndex) + 1)} })
-      this.$forceUpdate()
+      if (!this.quiz.questions[parseInt(this.$route.params.questionIndex) + 1].available) {
+        this.$router.push({ name: 'question', params: { id: this.$route.params.quizIndex } })
+      } else {
+        this.$router.push({ name: 'quiz', params: {quizIndex: this.$route.params.quizIndex, questionIndex: (parseInt(this.$route.params.questionIndex) + 1)} })
+      }
     },
     finish() {
       this.$router.push({ name: 'question', params: { id: this.$route.params.quizIndex } })
@@ -85,6 +120,22 @@ ol > li:before {
   content: counter(list, lower-alpha) ") ";
   font-weight:bold;
   counter-increment: list;
+}
+
+/*.next-button {*/
+/*  font-size: 24px;*/
+/*  transition: 0.5s;*/
+/*  opacity: 1;*/
+/*}*/
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 .correct-answer {

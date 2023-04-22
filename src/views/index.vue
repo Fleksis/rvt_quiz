@@ -1,4 +1,5 @@
 <template>
+  <button class="btn btn-primary m-4" style="font-size: 24px" @click="reset()">Attīrīt</button>
   <div class="d-flex flex-column justify-content-center align-items-center gap-5" style="width: 100%; margin-top: 50px;">
     <div class="d-flex justify-content-center text-center" style="width: 100%">
       <h1 class="display-6" style="color: #212529">Pārbaudi savas zināšanas šadas kategorijās</h1>
@@ -23,6 +24,12 @@ export default {
   computed: {
     quizzes() {
       return window.quizzes.value
+    }
+  },
+  methods: {
+    reset() {
+      localStorage.removeItem('quizzes')
+      window.location.reload();
     }
   }
 };
