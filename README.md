@@ -1,1 +1,2 @@
-# rvt_quiz
+# RVT_Konkurss_quiz
+RVT Grāmatvedības konkurss
