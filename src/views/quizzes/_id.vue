@@ -17,7 +17,7 @@
           </ol>
         </div>
         <div class="d-flex justify-content-between m-4">
-          <button v-if="!showAnswers" class="btn btn-primary" style="font-size: 24px" @click="startTask()">Rādīt atbilžu variantus</button>
+          <button v-if="!showAnswers" class="btn btn-primary" style="font-size: 24px" @click="showAnswers = true">Rādīt atbilžu variantus</button>
           <button class="btn btn-primary" style="font-size: 24px" @click="showAnswer()">Parādīt atbildi</button>
           <transition>
             <button v-if="showCorrectAnswer && quiz.questions.indexOf(question) + 1 >= quiz.questions.length" class="btn btn-primary" style="font-size: 24px" @click="finish()">Pabeigt</button>
@@ -57,6 +57,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.startTask()
+  },
   beforeUnmount() {
     this.timerAudio.pause()
   },
@@ -73,7 +76,6 @@ export default {
       }, 990)
     },
     async startTask() {
-      this.showAnswers = true
       await this.timerAudio.play()
       this.startTimer()
     },

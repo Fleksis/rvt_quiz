@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-center text-center" style="width: 100%">
       <h1 class="display-6" style="color: #212529">Pārbaudi savas zināšanas šadas kategorijās</h1>
     </div>
-    <div class="d-flex flex-wrap justify-content-center" style="width: 80%">
+    <div class="d-flex flex-wrap justify-content-center gap-4" style="width: 80%">
       <Card
         v-for="(quiz, index) in quizzes"
         :key="index"
@@ -35,24 +35,6 @@ export default {
 };
 </script>
 <style>
-.navbar > div{
-  text-align: center;
-  vertical-align: center;
-}
-.h1{
-  color: #0D6EFD;
-  font-family: 'Raleway', sans-serif;
-  font-weight: bolder;
-  line-height: 60px;
-  font-size: 35px;
-  letter-spacing: 1px;
-  padding-left: 6%;
-}
-
-.d-flex{
-  gap: 20px;
-}
-
 .display-6{
   color: black;
   font-weight: lighter;
