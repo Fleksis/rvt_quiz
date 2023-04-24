@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="container">
-        <div class="h2 mb-4 " style="color: #212529;padding-left: 5px">{{ question.title }}</div>
+        <div v-html="question.title" class="h2 mb-4 " style="color: #212529;padding-left: 5px"></div>
         <div v-if="showAnswers" id="options">
           <ol class="d-flex flex-column gap-1">
             <li v-for="answer in question.answers" :key="answer.index" class="rounded-3 p-2" :class="{ 'correct-answer': answer.correct && showCorrectAnswer }" style="font-size: 30px;color: #212529">
@@ -21,7 +21,7 @@
           <button class="btn btn-primary" style="font-size: 24px" @click="showAnswer()">Parādīt atbildi</button>
           <transition>
             <button v-if="showCorrectAnswer && quiz.questions.indexOf(question) + 1 >= quiz.questions.length" class="btn btn-primary" style="font-size: 24px" @click="finish()">Pabeigt</button>
-            <button v-else-if="showCorrectAnswer" class="btn btn-primary" style="font-size: 24px" @click="submit()">Nakamais</button>
+            <button v-else-if="showCorrectAnswer" class="btn btn-primary" style="font-size: 24px" @click="submit()">Nākamais</button>
           </transition>
         </div>
       </div>
@@ -99,7 +99,11 @@ export default {
 };
 
 </script>
-<style scoped>
+<style>
+body {
+  background-image: none;
+}
+
 .container{
   box-shadow: 0 0 0 2px rgb(255, 255, 255),
   0.3em 0.3em 1em rgba(0, 0, 0, 0.3);

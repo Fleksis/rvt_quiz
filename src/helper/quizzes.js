@@ -52,6 +52,10 @@ let quizzes = [
                 available: true,
                 answers: [
                     {
+                        title: "MK noteikumi  “Grāmatvedības kārtošanas noteikumi”\n",
+                        correct: true
+                    },
+                    {
                         title: "Grāmatvedības likums",
                         correct: true
                     },
@@ -72,7 +76,7 @@ let quizzes = [
                 answers: [
                     {
                         title: "Kases princips",
-                        correct: true
+                        correct: false
                     },
                     {
                         title: "Piesardzība sprincips",
@@ -80,7 +84,7 @@ let quizzes = [
                     },
                     {
                         title: "Uzkrāšanas princips",
-                        correct: false
+                        correct: true
                     },
                     {
                         title: "Bilances princips",
@@ -94,7 +98,7 @@ let quizzes = [
                 answers: [
                     {
                         title: "Bilances, Peļņas vai zaudējuma aprēķina, Naudas plūsmas pārskata, Pašu kapitāla izmaiņu pārskata un Vadības ziņojuma",
-                        correct: true
+                        correct: false
                     },
                     {
                         title: "Bilances, Peļņas vai zaudējuma aprēķina, Naudas plūsmas pārskata un Vadības ziņojuma",
@@ -106,7 +110,7 @@ let quizzes = [
                     },
                     {
                         title: "Finanšu pārskata un Vadības ziņojuma",
-                        correct: false
+                        correct: true
                     }
                 ]
             }
@@ -169,7 +173,7 @@ let quizzes = [
                         correct: false
                     },
                     {
-                        title: "Elektronisks datu attēlošanas veids PDF, HTML un citos datu apstādes formātos",
+                        title: "Elektronisks datu attēlošanas veids, ko fiziska persona var izmantot bez jebkādas papildus apstrādes",
                         correct: true
                     },
                     {
@@ -243,11 +247,11 @@ let quizzes = [
                     },
                     {
                         title: "Pamatlīdzekli bilancē norāda iegādes vai izveidošanas pašizmaksā",
-                        correct: true
+                        correct: false
                     },
                     {
                         title: "Pamatlīdzekli bilancē norāda neto vērtībā",
-                        correct: false
+                        correct: true
                     },
                     {
                         title: "Pamatlīdzekli bilancē norāda sākotnējā vērtībā",
@@ -417,8 +421,9 @@ let quizzes = [
                 ]
 
             },
+            // Turpināt
             {
-                title: "Kādas izmaksas neiekļauj krājumu sākotnējā vērtībā?",
+                title: "Kādas izmaksas <b>neiekļauj</b> krājumu sākotnējā vērtībā?",
                 available: true,
                 answers: [
                     {
@@ -820,6 +825,7 @@ if (JSON.parse(localStorage.getItem('quizzes'))) {
     quizzes = JSON.parse(localStorage.getItem('quizzes'))
 } else {
     localStorage.setItem('quizzes', JSON.stringify(quizzes))
+    quizzes = JSON.parse(localStorage.getItem('quizzes'))
 }
 
 export { quizzes }
